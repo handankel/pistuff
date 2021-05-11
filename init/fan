@@ -1,18 +1,51 @@
-#! /bin/sh
+#! /bin/bash
+
+PATH="/opt/scripts/"
+DAEMON="run-fan.py"
+NAME="fan"
+DESC="Fan control"
+PIDFILE=/var/run/$NAME.pid
 
 case "$1" in
-  start)
-    echo "Starting run-fan.py"
-    /opt/scripts/fan/run-fan.py &
-    ;;
-  stop)
-    echo "Stopping run-fan.py"
-    pkill -f /opt/scripts/fan/run-fan.py
-    ;;
-  *)
-    echo "Usage: /etc/init.d/fan {start|stop}"
+start)
+    printf "%-50s" "Starting $NAME..."
+    cd PATH
+    PID=`$DAEMON > /dev/null 2>$1 & echo $!`
+    if [ -z $PID ]; then
+      printf "%s\n" "Failed to start $NAME."
+    else
+      echo $PID > $PIDFILE
+      printf "%s\n" "$NAME started."
+    fi
+;;
+status)
+  printf "%-50s" "Checking $NAME..."
+  if [ -f $PIDFILE ]; then
+      PID=`cat $PIDFILE`
+      if [ -z "`ps axf | grep ${PID} | grep -v grep`" ]; then
+        printf "%s\n" "Process dead but pidfile exists" $PIDFILE
+      else
+        echo "Running"
+      fi
+  else
+      printf "%s\n" "$NAME not running"
+  fi
+;;
+stop)
+    printf "%-50s" "Stopping $NAME"
+    if [ -f $PIDFILE ]; then
+        kill -HUP $PID
+        printf "%s\n" "Ok"
+        rm -f $PIDFILE
+    else
+        printf "%s\n" "pidfile not found"
+    fi
+;;
+restart)
+    $0 stop
+    $0 start
+;;
+*)
+    echo "Usage: $0 {status|start|stop|restart}"
     exit 1
-    ;;
 esac
-
-exit 0
