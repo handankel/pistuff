@@ -1,0 +1,18 @@
+#! /bin/sh
+
+case "$1" in
+  start)
+    echo "Starting run-fan.py"
+    /opt/scripts/fan/run-fan.py &
+    ;;
+  stop)
+    echo "Stopping run-fan.py"
+    pkill -f /opt/scripts/fan/run-fan.py
+    ;;
+  *)
+    echo "Usage: /etc/init.d/fan {start|stop}"
+    exit 1
+    ;;
+esac
+
+exit 0
