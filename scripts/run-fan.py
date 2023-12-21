@@ -5,7 +5,7 @@ import os
 import RPi.GPIO as GPIO
 
 pin = 14 # GPIO pin
-maxTMP = 55 # The temperature in Celsius after which we trigger the fan
+maxTMP = 59 # The temperature in Celsius after which we trigger the fan
 minTMP = 40 # The temperature in Celsius after which we stop the fan
 sleepTime = 5
 debug = False

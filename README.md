@@ -6,6 +6,8 @@ sudo mv scripts /opt/
 make them exicutible
 sudo chmod 755 /opt/scripts/*
 
-sudo update-rc.d fan defaults
 
+/etc/systemd/system/fan.service
+
+sudo systemctl daemon-reload 
 

@@ -1,0 +1,8 @@
+[Unit]
+Description=My Fan service
+[Service]
+Type=simple
+Restart=always
+ExecStart=/opt/scripts/run-fan.py
+[Install]
+WantedBy=multi-user.target
